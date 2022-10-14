@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}details{% endblock %}
+{% block containercontent %}
+<h2>Fill in required details:</h2>
+<form method="post">
+  <div class="form-group">
+    <label for="categoryInput">Please enter the item(s) for which you want </label>
+    <input type="text" class="form-control" id="categoryInput" name="categoryInput" aria-describedby="categoryHelp" placeholder="eg. politics, nike, banana">
+    <small id="categoryHelp" class="form-text text-muted">You can also enter multiple items separated by a comma!</small>
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="includeRetweets" name="includeRetweets">
+    <label class="form-check-label" for="includeRetweets">Include Retweets</label>
+  </div>
+  <div class="form-group">
+    <label for="maxTweets">Max tweets to be fetched</label>
+    <input type="text" class="form-control" id="maxTweets" name="maxTweets" aria-describedby="categoryHelp" placeholder="enter -1 for all tweets">
+    <small id="maxHelp" class="form-text text-muted">max tweets can be restricted by developer quota</small>
+  </div>
+  <button type="submit" class="btn btn-primary">Sanitize My Tweets</button>
+</form>
+{% endblock %}

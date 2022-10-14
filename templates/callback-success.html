@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}results{% endblock %}
+{% block script %}
+<link rel="stylesheet" href="{{ url_for('static', filename='custom-styles.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    function updateTable() {
+        var request = new XMLHttpRequest();
+        var sliderVal = document.getElementById("threshold").value;
+        request.open('GET', '/resultUpdate' + '?sliderVal=' + sliderVal);
+
+        request.onload = function() {
+          if (request.status === 200) {
+                document.querySelector("#responseTable > tbody").innerHTML = request.responseText;
+          } else {
+            // ops, we got an error from the server
+            alert('Something went wrong. Please write to me at ankitsin4@gmail.com.');
+          }
+        };
+
+        request.onerror = function() {
+          // ops, we got an error trying to talk to the server
+          alert('Something went wrong. Please write to me at ankitsin4@gmail.com.');
+        };
+
+        request.send();
+    }
+
+    function deleteTweets() {
+        document.getElementById("main").style.display = 'none';
+        document.getElementById("deleting").style.display = 'block';
+        var request = new XMLHttpRequest();
+        var sliderVal = document.getElementById("threshold").value;
+        request.open('GET', '/delete' + '?sliderVal=' + sliderVal);
+
+        request.onload = function() {
+          if (request.status === 200) {
+                window.location = '/final'
+          } else {
+            // ops, we got an error from the server
+            alert('Something went wrong. Please write to me at ankitsin4@gmail.com.');
+          }
+        };
+
+        request.onerror = function() {
+          // ops, we got an error trying to talk to the server
+          alert('Something went wrong. Please write to me at ankitsin4@gmail.com.');
+        };
+
+        request.send();
+    }
+</script>
+{% endblock %}
+{% block loading %}<div class="loader" id="deleting"></div>{% endblock %}
+{% block containercontent %}
+<h2>the force is with you!</h2>
+<p>Hey {{ user_name }}!, we've successfully retrieved and classified your tweets. Yay!</p>
+<label for="threshold" class="form-label">Drag the slider below to adjust threshold, then press "Delete Tweets".</label><br/>
+<input type="range" class="form-range" min="0" max="1" step="0.05" id="threshold" onchange="updateTable()">
+
+<table class="table caption-top" id="responseTable">
+    <caption>The tweets to be deleted are dynamically updated below, based on your threshold selection.</caption>
+    <thead>
+        <tr>
+            <th>Tweet ID</th>
+            <th>Text</th>
+            <th>Label</th>
+        <tr>
+    </thead>
+    <tbody>
+        {% for tweet in tweets %}
+        <tr>
+            <td>{{ tweet.tweet_id }}</td>
+            <td>{{ tweet.text }}</td>
+            <td>{{ tweet.label }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="#" class="btn btn-small btn-danger" onclick="deleteTweets()">Delete Tweets</a>
+<a href="/" class="btn btn-small btn-primary">Cancel</a>
+{% endblock %}
+{% block more_footer %}{% endblock %}
+

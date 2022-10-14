@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}hello{% endblock %}
+{% block script %}
+<link rel="stylesheet" href="{{ url_for('static', filename='custom-styles.css') }}">
+{% endblock %}
+{% block containercontent %}
+<h2>Namaste!</h2>
+<p class="lead">Welcome to tweepitize. First let's sign you in into Twitter.</p>
+<p>Ready to give this a shot?</p>
+<a href="/start" class="btn btn-small btn-success">Let's Go!</a>
+{% endblock %}

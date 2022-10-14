@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}processing{% endblock %}
+{% block script %}
+<link rel="stylesheet" href="{{ url_for('static', filename='custom-styles.css') }}">
+<script>
+    var request = new XMLHttpRequest();
+    request.open('POST', '/process');
+    request.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+
+    request.onload = function() {
+      if (request.status === 200 && request.responseText === 'done') {
+        // long process finished successfully, redirect user
+        window.location = '/result';
+      } else {
+        // ops, we got an error from the server
+        alert('Something went wrong. Please write to me at ankitsin4@gmail.com.');
+      }
+    };
+
+    request.onerror = function() {
+      // ops, we got an error trying to talk to the server
+      alert('Something went wrong. Please write to me at ankitsin4@gmail.com.');
+    };
+
+    request.send();
+</script>
+{% endblock %}
+{% block containercontent %}
+<h2>please wait - your tweets are being fetched and processed ...</h2>
+<p>you shall be automatically redirected to the results, once the tweets are processed.
+    This operation might take some time, please be patient. <br/>
+    <img src="{{ url_for('static', filename='processing.gif') }}" class="img-fluid" id="processing" alt="WIP"> <br/>
+</p>
+{% endblock %}
+{% block more_footer %}<br>GIF courtesy <a href="https://www.behance.net/gallery/30581063/GIFs-in-Progress">Geo Law on Behance</a>{% endblock %}

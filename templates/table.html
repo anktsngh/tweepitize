@@ -1,0 +1,7 @@
+{% for tweet in tweets %}
+<tr>
+    <td>{{ tweet.tweet_id }}</td>
+    <td>{{ tweet.text }}</td>
+    <td>{{ tweet.label }}</td>
+</tr>
+{% endfor %}

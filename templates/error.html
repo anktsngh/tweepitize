@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}error{% endblock %}
+{% block containercontent %}
+	    <h2>Error Encountered!</h2>
+    	<div class="panel panel-danger">
+    		<div class="panel-heading">
+    			<h3 class="panel-title">Yikes, something went wrong!</h3>
+				Please try again or write to me at ankitsin4@gmail.com with the error code below.
+    		</div>
+    		<div class="panel-body">{{ error_message }}</div>
+    	</div>
+    	<a href="/" class="btn btn-small btn-primary">Let me try again</a>
+{% endblock %}
