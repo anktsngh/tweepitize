@@ -1,4 +1,4 @@
-CLIENT_ID = ""                          # retracted
+CLIENT_ID = ""                          # retracted for web
 
 auth_url = "https://twitter.com/i/oauth2/authorize"
 token_url = "https://api.twitter.com/2/oauth2/token"

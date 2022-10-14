@@ -1,6 +1,6 @@
 from requests_oauthlib import OAuth2Session
 from flask import Flask, request, url_for, render_template
-# from classifier import classify_tweets
+from classifier import classify_tweets
 import base64
 import hashlib
 import os
@@ -145,7 +145,7 @@ def process_tweets():
                 entities.append(annotation["entity"]["name"])
             tweet["text"] = tweet["text"] + f". The tweet might refer to {', '.join(entities)}" if entities else ""
 
-    # tweet_obj_list = classify_tweets(tweets, session_dict['cats'])
+    tweet_obj_list = classify_tweets(tweets, session_dict['cats'])
 
     time.sleep(10)
     return "done", 200
