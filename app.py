@@ -20,6 +20,7 @@ oauth_store = {}
 token = ""
 session_dict = {}
 tweet_obj_list = []
+client_id = config.CLIENT_ID if config.CLIENT_ID else os.getenv('CLIENT_ID')
 
 
 def make_token(client_id, redirect_uri, scopes):
@@ -117,7 +118,7 @@ def start():
 
     scopes = ["tweet.read", "users.read", "tweet.write", "offline.access"]
 
-    twitter = make_token(config.CLIENT_ID, app_callback_url, scopes)
+    twitter = make_token(client_id, app_callback_url, scopes)
     authorization_url, state = twitter.authorization_url(config.auth_url, code_verifier=code_verifier,
                                                          code_challenge=code_challenge, code_challenge_method="S256")
     # oauthlib.oauth2.rfc6749.errors.UnauthorizedClientError
