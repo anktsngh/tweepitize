@@ -20,7 +20,6 @@ oauth_store = {}
 token = ""
 session_dict = {}
 tweet_obj_list = []
-client_id = config.CLIENT_ID if config.CLIENT_ID else os.getenv('CLIENT_ID')
 
 
 def make_token(client_id, redirect_uri, scopes):
@@ -49,12 +48,12 @@ def get_all_tweets(user_id, bearer_token, fetch_retweets, max_tweets):
             },
         ).json()
         fetched_tweets += config.max_results_per_query
+        tweets.extend(response['data'])
         if "next_token" in response['meta']:
             params['pagination_token'] = response['meta']['next_token']
         else:
             print("WARNING: Developer Quota Exhausted!")
             break
-        tweets.extend(response['data'])
     return tweets
 
 
@@ -118,6 +117,8 @@ def start():
 
     scopes = ["tweet.read", "users.read", "tweet.write", "offline.access"]
 
+    client_id = config.CLIENT_ID if config.CLIENT_ID else os.getenv('CLIENT_ID')
+
     twitter = make_token(client_id, app_callback_url, scopes)
     authorization_url, state = twitter.authorization_url(config.auth_url, code_verifier=code_verifier,
                                                          code_challenge=code_challenge, code_challenge_method="S256")
@@ -133,7 +134,7 @@ def process_tweets():
 
     for tweet in tweets:
         if config.resolve_mentions:
-            mentions = re.findall(r'@[A-Za-z0-9]_+', tweet["text"])
+            mentions = re.findall(r'@[A-Za-z0-9_]+', tweet["text"])
             for mention in mentions:
                 try:
                     tweet['text'] = tweet['text'].replace(mention, name_from_username(mention[1:], token))
@@ -163,7 +164,7 @@ def initial_result():
 def delete_tweets():
     global twitter, code_verifier, oauth_store, token, session_dict, tweet_obj_list
     threshold = float(request.args.get('sliderVal'))
-    filtered_ids = [tweet_obj.tweet_id for tweet_obj in tweet_obj_list if tweet_obj.label_score < threshold]
+    filtered_ids = [tweet_obj.tweet_id for tweet_obj in tweet_obj_list if tweet_obj.label_score > threshold]
     for tweet_id in filtered_ids:
         if not delete_tweet(tweet_id, token):
             print(f"WARNING: Could not delete tweet ID: {tweet_id}")

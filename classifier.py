@@ -1,9 +1,12 @@
-from transformers import pipeline
 import re
 from html import unescape
+import config
 
-classifier = pipeline("zero-shot-classification",
-                      model="facebook/bart-large-mnli")
+# pose sequence as a NLI premise and label as a hypothesis
+from torch import device
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+nli_model = AutoModelForSequenceClassification.from_pretrained(config.model_name)
+tokenizer = AutoTokenizer.from_pretrained(config.model_name)
 
 
 class TweetOut:
@@ -51,8 +54,22 @@ def classify_tweets(tweets, labels):
     for tweet in tweets:
         cleaned_tweet_text = clean_tweet(tweet['text'])
         if cleaned_tweet_text:
-            pred = classifier(cleaned_tweet_text, labels)
-            tweet_obj_list.append(TweetOut(tweet['id'], cleaned_tweet_text, pred['labels'], pred['scores']))
+            pred_scores = []
+            for label in labels:
+                premise = cleaned_tweet_text
+                hypothesis = f'This text is about {label}.'
+
+                # run through model pre-trained on MNLI
+                x = tokenizer.encode(premise, hypothesis, return_tensors='pt',
+                                     truncation_strategy='only_first')
+                logits = nli_model(x.to(device(config.device_type)))[0]
+
+                # Throw away "neutral" (dim 1) and take the probability of
+                # "entailment" (2) as the probability of the label being true
+                entail_contradiction_logits = logits[:, [0,2]]
+                probs = entail_contradiction_logits.softmax(dim=1)
+                pred_scores.append(probs[:, 1].item())
+            tweet_obj_list.append(TweetOut(tweet['id'], cleaned_tweet_text, labels, pred_scores))
 
     return tweet_obj_list
 
