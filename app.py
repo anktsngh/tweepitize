@@ -118,6 +118,7 @@ def start():
     scopes = ["tweet.read", "users.read", "tweet.write", "offline.access"]
 
     client_id = config.CLIENT_ID if config.CLIENT_ID else os.getenv('CLIENT_ID')
+    print(client_id)
 
     twitter = make_token(client_id, app_callback_url, scopes)
     authorization_url, state = twitter.authorization_url(config.auth_url, code_verifier=code_verifier,
