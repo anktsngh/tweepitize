@@ -34,7 +34,7 @@ def clean_tweet(text):
     tweet = re.sub(r'#', '', tweet)
 
     # remove mentions
-    tweet = re.sub(r'@[A-Za-z0-9]+', ' ', tweet)
+    # tweet = re.sub(r'@[A-Za-z0-9_]+', ' ', tweet)
 
     # remove punctuations like quote, exclamation sign, etc.
     # we replace them with a space
@@ -69,7 +69,7 @@ def classify_tweets(tweets, labels):
                 entail_contradiction_logits = logits[:, [0,2]]
                 probs = entail_contradiction_logits.softmax(dim=1)
                 pred_scores.append(probs[:, 1].item())
-            tweet_obj_list.append(TweetOut(tweet['id'], cleaned_tweet_text, labels, pred_scores))
+            tweet_obj_list.append(TweetOut(tweet['id'], cleaned_tweet_text, labels, pred_scores).__dict__)
 
     return tweet_obj_list
 
