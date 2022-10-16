@@ -5,8 +5,8 @@ import config
 # pose sequence as a NLI premise and label as a hypothesis
 from torch import device
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-nli_model = AutoModelForSequenceClassification.from_pretrained(config.model_name)
-tokenizer = AutoTokenizer.from_pretrained(config.model_name)
+nli_model = AutoModelForSequenceClassification.from_pretrained(config.mnli_model)
+tokenizer = AutoTokenizer.from_pretrained(config.mnli_model)
 
 
 class TweetOut:

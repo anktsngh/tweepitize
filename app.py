@@ -29,6 +29,8 @@ def get_all_tweets(user_id, bearer_token, fetch_retweets, max_tweets):
     if not fetch_retweets:
         params['exclude'] = "retweets"
     fetched_tweets = 0
+    if not config.limit_tweet == '-1':
+        max_tweets = min(config.limit_tweet, max_tweets)
     while fetched_tweets < max_tweets:
         endpoint = f"https://api.twitter.com/2/users/{user_id}/tweets?" \
                    f"tweet.fields=context_annotations&max_results={config.max_results_per_query}"
