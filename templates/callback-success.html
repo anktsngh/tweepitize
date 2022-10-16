@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}results{% endblock %}
 {% block script %}
-<link rel="stylesheet" href="{{ url_for('static', filename='custom-styles.css') }}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
     function updateTable() {
@@ -80,5 +79,4 @@
 <a href="#" class="btn btn-small btn-danger" onclick="deleteTweets()">Delete Tweets</a>
 <a href="/" class="btn btn-small btn-primary">Cancel</a>
 {% endblock %}
-{% block more_footer %}{% endblock %}
 

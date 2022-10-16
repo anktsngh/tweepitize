@@ -18,3 +18,16 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+body{
+    background-image:url('../static/ankt_sngh_a_blue_bird_escaping_a_cage_made_up_of_wires_white_bg.png');
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: 5vw;
+  max-width: 70vw;
+}
