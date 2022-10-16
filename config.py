@@ -14,4 +14,4 @@ resolve_mentions = True                                 # @ankt_sngh -> Ankit Si
 
 # classification device and model
 device_type = "cpu"                                     # cpu or cuda
-mnli_model = "facebook/bart-large-mnli"                 # low mem option: "typeform/distilbert-base-uncased-mnli"
+mnli_model = "typeform/distilbert-base-uncased-mnli"    # "facebook/bart-large-mnli" if no mem constraints
